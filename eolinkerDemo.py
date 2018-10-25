@@ -8,15 +8,16 @@ import datetime
 class eolinkerDemo(unittest.TestCase):
 
     def setUp(self):
-
-        self.driver = webdriver.Chrome()
-
-        #chrmdri_path = 'C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe'
-        #self.driver = webdriver.Chrome(executable_path=chrmdri_path)
-
         
-        #self.driver = webdriver.PhantomJS()
+        self.driver = webdriver.Chrome()
+        self.driver.maximize_window()
+        self.driver.implicitly_wait(10)
+        
+        
+        #self.driver = webdriver.Chrome(executable_path=chrome_path))
 
+        #self.driver = webdriver.PhantomJS()
+        #self.driver = webdriver.PhantomJS(executable_path="./phantomjs"))
 
         '''
         option = webdriver.ChromeOptions()
@@ -27,16 +28,19 @@ class eolinkerDemo(unittest.TestCase):
     def elem_loc(self,loc):
         return self.driver.find_element_by_xpath(loc)
 
-    def screenshot(self,result):
+    def screenshot(self,testcase_name,result):
         now_time = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-        png_path = r"C:\Users\王亚峰\Desktop\eolinkerDemoPng\login_"+result+"_"+now_time+".png"
+        png_path = r"C:\Users\王亚峰\Desktop\eolinkerDemoPng\\"+testcase_name+"_"+result+"_"+now_time+".png"
         self.driver.save_screenshot(png_path)
-        print("screenshot success!")
+        print(".........screenshot success.")
 
 
     def test_login_eolinker(self):
+
+        testcase_name = "login"
         driver = self.driver
         driver.get('https://www.eolinker.com/#/login')
+        driver.implicitly_wait(10)
 
         username_loc = '/html/body/div[1]/login/div/div/div[2]/article/form/ul/li[1]/input'
         password_loc = '/html/body/div[1]/login/div/div/div[2]/article/form/ul/li[2]/input'
@@ -44,33 +48,38 @@ class eolinkerDemo(unittest.TestCase):
 
         logo_loc = '/html/body/div[1]/home/div/eo-navbar5/div/div/header/ul[1]/li[1]'
 
-
         user = 'arthur00@qq.com'
         pswd = '~zaq1234'
 
-        elem1 = driver.find_element_by_xpath(username_loc)
-        elem2 = driver.find_element_by_xpath(password_loc)
-        elem3 = driver.find_element_by_xpath(loginbtn_loc)
+
+        elem_loc = self.elem_loc
+        elem1 = elem_loc(username_loc)
+        elem2 = elem_loc(password_loc)
+        elem3 = elem_loc(loginbtn_loc)
 
         
         elem1.send_keys(user)
         elem2.send_keys(pswd)
         elem3.click()
 
-        time.sleep(10)
+        driver.implicitly_wait(10)
 
         try:
-            self.elem_loc(logo_loc)
-            print("[test_login_eolinker] : PASS")
+            elem_loc(logo_loc)
+            print("[test_login_eolinker] : PASS", end = ' ')
             result = "pass"
-            self.screenshot(result)
+            self.screenshot(testcase_name,result)
             
         except Exception as e:
-            print("[test_login_eolinker] : FAILED")
+            print("[test_login_eolinker] : FAILED", end = ' ')
             result = "failed"
-            self.screenshot(result)
+            self.screenshot(testcase_name,result)
 
-
+        '''
+        js = "alert('This a selenium demo, Thanks for your watch!')"
+        driver.execute_script(js)
+        time.sleep(10)
+        '''
 
     def tearDown(self):
         self.driver.quit()
@@ -79,4 +88,5 @@ class eolinkerDemo(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
         
