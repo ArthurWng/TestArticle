@@ -5,14 +5,17 @@ from selenium import webdriver
 from time import sleep
 import datetime
 
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+
 class eolinkerDemo(unittest.TestCase):
 
     @classmethod
-    def setUpClass(self):
+    def setUpClass(cls):
 
-        self.driver = webdriver.Chrome()
-        self.driver.maximize_window()
-        self.driver.implicitly_wait(10)
+        cls.driver = webdriver.Chrome()
+        cls.driver.maximize_window()
+        cls.driver.implicitly_wait(10)
 
 
         #self.driver = webdriver.Chrome(executable_path=chrome_path))
@@ -23,12 +26,12 @@ class eolinkerDemo(unittest.TestCase):
         '''
         option = webdriver.ChromeOptions()
         option.add_argument('headless')
-        self.driver = webdriver.Chrome(chrome_options=option)
+        cls.driver = webdriver.Chrome(chrome_options=option)
         '''
-
-
-        self.driver.get('https://www.eolinker.com/#/login')
-        self.driver.implicitly_wait(10)
+        
+        test_url = 'https://www.eolinker.com/#/login'
+        cls.driver.get(test_url)
+        cls.driver.implicitly_wait(10)
 
 
     def elem_loc(self,loc):
@@ -38,7 +41,7 @@ class eolinkerDemo(unittest.TestCase):
         now_time = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
         png_path = r"C:\Users\王亚峰\Desktop\eolinkerDemoPng\\"+testcase_name+"_"+result+"_"+now_time+".png"
         self.driver.save_screenshot(png_path)
-        print(".........screenshot success.",end='')
+        print(".........screenshot success.")
 
 
     def test_1_login_eolinker(self):
@@ -87,10 +90,11 @@ class eolinkerDemo(unittest.TestCase):
 
         switchbtn_loc = '/html/body/div[1]/home/div/eo-navbar5/div/div/header/ul[1]/li[2]/a/div/div'
         switchwin_loc = '/html/body/div[1]/div/div/div[1]/div'
+        pageblank_loc = '/html/body/div[1]/div/div/div[1]'
         
         
         # sub-testcase1
-        print()
+        
         testcase_name = 'switch_button'
         try:
             elem_loc(switchbtn_loc)
@@ -105,7 +109,7 @@ class eolinkerDemo(unittest.TestCase):
 
 
         # sub-testcase2
-        print()
+        
         testcase_name = 'switchSpace_window'
 
         elem_loc(switchbtn_loc).click()
@@ -117,13 +121,19 @@ class eolinkerDemo(unittest.TestCase):
             self.screenshot(testcase_name,result)
             
         except Exception as e:
-            print("[检查点切换按钮是否弹出切换窗口] : FAILED", end = ' ')
+            print("[检查点切换按钮是否弹出切换空间窗口] : FAILED", end = ' ')
             result = "failed"
             self.screenshot(testcase_name,result)
 
+        print("[按ecs键，关闭切换空间窗口]", end = ' ')
+        ActionChains(driver).key_down(Keys.ESCAPE).perform()
+        testcase_name = 'close_switchwindow'
+        self.screenshot(testcase_name,result)
+
+        
     @classmethod
-    def tearDownClass(self):
-        self.driver.quit()
+    def tearDownClass(cls):
+        cls.driver.quit()
 
         
 
