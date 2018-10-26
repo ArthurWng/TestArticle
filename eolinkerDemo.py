@@ -13,21 +13,25 @@ class eolinkerDemo(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
 
+        '''
         cls.driver = webdriver.Chrome()
         cls.driver.maximize_window()
         cls.driver.implicitly_wait(10)
-
+        '''
 
         #self.driver = webdriver.Chrome(executable_path=chrome_path))
 
         #self.driver = webdriver.PhantomJS()
         #self.driver = webdriver.PhantomJS(executable_path="./phantomjs"))
 
-        '''
+        
         option = webdriver.ChromeOptions()
-        option.add_argument('headless')
+        option.add_argument('--headless')
+        option.add_argument('--window-size=1920,1080')
         cls.driver = webdriver.Chrome(chrome_options=option)
-        '''
+        
+        #cls.driver.maximize_window()
+        
         
         test_url = 'https://www.eolinker.com/#/login'
         cls.driver.get(test_url)
