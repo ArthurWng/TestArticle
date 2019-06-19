@@ -56,7 +56,7 @@ class eolinkerDemo(unittest.TestCase):
         testcase_name = "login"
 
         user = 'arthur00@qq.com'
-        pswd = '~zaq1234'
+        pswd = '********'
 
         username_loc = '/html/body/div[1]/login/div/div/div[2]/article/form/ul/li[1]/input'
         password_loc = '/html/body/div[1]/login/div/div/div[2]/article/form/ul/li[2]/input'
